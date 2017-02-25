@@ -103,12 +103,7 @@ class ScreenHandler(object):
         rects = self.update(dt)
         #self.screen.blit(self.back_screen, (0,0))
         if rects:
-            #get a list of all rects, doubled for both sides of the screen.
-            final_rects = []
-            for rect in rects:
-                final_rects.append(rect)
-                final_rects.append(rect.move(self.back_screen.get_size()[0] / 2, 0))
-            pygame.display.update(final_rects)
+            pygame.display.update(rects)
         else:
             pygame.display.update()
         #pygame.display.flip()

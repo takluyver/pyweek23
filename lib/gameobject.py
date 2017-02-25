@@ -30,15 +30,15 @@ class GameObject(object):
         # if we are moving left, then start rotating left.
         # if we are moving right, start rotating right.
         if (self.position[0] < x): # we are moving right
-            self.rotation_vector -= 0.05 * dt
+            self.rotation_vector -= 0.01 * dt
         elif (self.position[0] > x): # we're moving left
-            self.rotation_vector += 0.05 * dt
+            self.rotation_vector += 0.01 * dt
         else:
             #move vector back toward 0.
             if self.rotation_vector > 0:
-                self.rotation_vector = max(0, self.rotation_vector - 0.15 * dt)
+                self.rotation_vector = max(0, self.rotation_vector - 0.05 * dt)
             else:
-                self.rotation_vector = min(0, self.rotation_vector + 0.15 * dt)
+                self.rotation_vector = min(0, self.rotation_vector + 0.05 * dt)
         self.position = (x, y)
         return self.position
 

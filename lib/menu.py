@@ -7,14 +7,20 @@ from utils import get_font, scale_rect
 from game import Game
 from settings import Settings
 
+def addgamestate(menu):
+    g = Game()
+    s = Settings()
+    #return them to menu after game is done.
+    menu.statemanager.addnextstate(Menu(menu.statemanager))
+    menu.statemanager.addnextstate(g)
+    
 class Menu(State, ScreenHandler):
 
     def __init__(self, statemanager):
         super(State, self).__init__()
         #TODO: just use state def in lambda.  if we don't init outside lambda, the exception is squelched for some baffling reason.
-        g = Game()
-        s = Settings()
-        self.options = [ (get_font("New Game", "good times rg.ttf", 240, (252, 240, 15)), lambda x: x.statemanager.addnextstate(g)),
+
+        self.options = [ (get_font("New Game", "good times rg.ttf", 240, (252, 240, 15)), addgamestate),
                         #(get_font("Settings", "good times rg.ttf", 240, (252, 240, 15)), lambda x: x.statemanager.addnextstate(s)),
                         (get_font("   Exit   ", "good times rg.ttf", 240, (252, 240, 15)), lambda x: x) ]
         self.is_done = False

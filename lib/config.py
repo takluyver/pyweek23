@@ -24,3 +24,7 @@ IMAGE_ROOT = "assets/images/"
 #don't change this.
 GAME_WIDTH = 1920 # half of 4K width
 GAME_HEIGHT = 2160 # 4K height
+
+highscores = []
+for line in file("highscores.txt").readlines():
+    highscores.append(line.split("|"))

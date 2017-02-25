@@ -12,9 +12,13 @@ def rot_center(image, angle):
 
 
 def get_font(text, fontname, size, color, bgcolor=(0,0,0)):
-    font = pygame.font.Font(config.FONT_ROOT + fontname, 240)
-    surf = font.render(text, True, color, bgcolor)
-    surf = surf.convert(32)
+    font = pygame.font.Font(config.FONT_ROOT + fontname, size)
+    if bgcolor == None:
+        surf = font.render(text, True, color)
+        surf = surf.convert_alpha()
+    else:
+        surf = font.render(text, True, color, bgcolor)
+        surf = surf.convert(32)
     return surf
 
 def aspect_scale(img,(bx,by)):
