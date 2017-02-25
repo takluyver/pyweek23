@@ -6,6 +6,7 @@ from screenhandler import ScreenHandler
 from state import State
 from gameobject import GameObject
 import utils
+from platform import PlatformManager
 
 class Game(State, ScreenHandler):
     def __init__(self):
@@ -14,10 +15,12 @@ class Game(State, ScreenHandler):
         self.background_left = Background(width/2, height)
         self.background_right = Background(width/2, height)
         self.position = (960,0)
-        self.bright_star = GameObject(["Sprites/star1.png", "Sprites/star2.png", "Sprites/star3.png"], self.position, width/2, height, 0)
-        self.dark_star = GameObject(["star_dark.png"], self.position, width/2, height, 0)
+        self.bright_star = GameObject(["sprites/star1.png", "sprites/star2.png", "sprites/star3.png"], self.position, width/2, height, 0)
+        self.dark_star = GameObject(["sprites/dark1.png", "sprites/dark2.png", "sprites/dark3.png"], self.position, width/2, height, 0)
         self.__sizetextures()
-        self.platforms = []
+        self.left_platforms = []
+        self.right_platforms = []
+        self.platform_manager = PlatformManager()
         self.displacement = 0
         self.is_displacing = False
         self.keyvector = (0,0)
@@ -29,9 +32,7 @@ class Game(State, ScreenHandler):
         self.active_player = 0
         self.gravity = -15
         self.score = 0
-        self.scorefont = utils.get_font("Hi Score: " + str(config.highscores[0][1]).zfill(10) + " Score: " + str(self.score).zfill(10), "good times rg.ttf", 35, (255,0,0), None)
-
-
+        self.scorefont = utils.get_font("Hi Score: " + str(config.highscores[0][1]).zfill(10) + " Score: " + str(self.score).zfill(10), "good times rg.ttf", 35, (255,255,255), None)
 
     def update(self, dt):
         width, height = self.back_screen.get_size()
@@ -56,7 +57,7 @@ class Game(State, ScreenHandler):
         #reposition the player
         self.position = (self.position[0] + dt * self.keyvector[0] * self.movement_speed,
                         self.position[1] + dt * self.keyvector[1] * self.movement_speed)
-        self.position = self.bright_star.move((self.position[0], max(self.position[1], 10)), dt)
+        self.position = self.bright_star.move((self.position[0], max(self.position[1], 1)), dt)
         # start scrolling once past halfway point.
         if (self.position[1] > config.GAME_HEIGHT / 2):
                 self.is_displacing = True
@@ -95,10 +96,18 @@ class Game(State, ScreenHandler):
         temphi = int(config.highscores[0][1])
         if self.score > temphi:
             temphi = self.score
-        self.scorefont = utils.get_font("Hi Score: " + str(int(temphi)).zfill(10) + " Score: " + str(int(self.score)).zfill(10), "monofonto.ttf", 32, (255,0,0), None)
+        self.scorefont = utils.get_font("Hi Score: " + str(int(temphi)).zfill(10) + " Score: " + str(int(self.score)).zfill(10), "monofonto.ttf", 32, (255,255,255), None)
         destrect = pygame.rect.Rect(self.back_screen.get_size()[0] - self.scorefont.get_size()[0] - 20,
                             20, self.scorefont.get_size()[0], self.scorefont.get_size()[1] + 20)
-        #dirty_rects.append(destrect)
+
+        #make a platform on the left side.
+        """plat5 = self.platform_manager.getplatformimage(8, True)
+        destrect = pygame.rect.Rect(0, 0, plat5.get_size()[0], plat5.get_size()[1])
+        dirty_rects.append(destrect)
+        self.back_screen.blit(plat5, destrect)"""
+        #self.left_platforms.append(self.platformmanager.getplatformimage(5))
+
+
         self.back_screen.blit(self.scorefont, destrect)
         #TODO: add all current positions to dirty rects so we can pass all to display update.
         dirty_rects.append(self.bright_star.getscreenrect((width/2, height)))
