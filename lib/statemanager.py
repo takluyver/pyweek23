@@ -17,8 +17,11 @@ class StateManager(object):
 
     def add(self, state):
         self.states.append(state)
+
+    def addnextstate(self, state):
+        self.states.insert(1, state)
+
     def movenext(self):
-        print "movenext"
         self.states = self.states[1:]
 
     def current(self):
@@ -27,5 +30,4 @@ class StateManager(object):
         return None
 
     def isdone(self):
-        #print "isdone"
         return len(self.states) == 0

@@ -15,4 +15,4 @@ class StubHandler(object):
         return False
 
     def update_super(self, dt):
-        pass
+        self.update(dt)

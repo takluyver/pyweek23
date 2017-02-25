@@ -4,8 +4,7 @@ from gameobject import GameObject
 #draw a live background
 class Background(object):
     #Load all full resolution assets as static
-    space = pygame.image.load("assets/space.png")
-    asteroids = [pygame.image.load("assets/asteroid1.png")]
+    space = pygame.image.load("assets/images/space.png")
 
     def __init__(self, width, height):
         self.resize_textures(width, height)
@@ -16,10 +15,8 @@ class Background(object):
         surf.fill((0,0,0), (0, 0, width, height))
         #draw background
         space_width, space_height = self.resized_space.get_size()
-        surf.blit(self.resized_space, (width-space_width, (height - space_height) / 2))
+        surf.blit(self.resized_space, (0, 0))
 
-    def create_asteroid(self):
-        pass
 
     def resize_textures(self, width, height):
         self.current_width = width

@@ -1,13 +1,12 @@
 import pygame
 from state import State
 from screenhandler import ScreenHandler
-from utils import scale_rect
+from utils import scale_rect, get_font
 
 class Fader(ScreenHandler, State):
     def __init__(self, text, fadeinms, fadeoutms, totalms, fontname, color):
         super(Fader, self).__init__()
-        self.font = pygame.font.Font(fontname, 240)
-        self.label = self.font.render(text, True, color, (0,0,0))
+        self.label = get_font(text, fontname, 240, color)
         self.fadeinms = fadeinms
         self.fadeoutms = fadeoutms
         self.totalms = totalms
@@ -30,11 +29,9 @@ class Fader(ScreenHandler, State):
         if self.currentms >= self.totalms:
             self.is_done = True
 
-
         center = self.screen.get_rect().center
         target = scale_rect(self.screen.get_rect(), self.label.get_rect(), self.width, self.width)
-        #print target
-        target_surf = pygame.transform.scale(self.label, (target.width, target.height))
+        target_surf = pygame.transform.smoothscale(self.label, (target.width, target.height))
         target_surf.set_alpha(self.alpha)
         #shift to be in the center of the screen
         target.center = center

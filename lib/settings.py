@@ -2,22 +2,26 @@ import pygame
 from pygame.locals import *
 import config
 from background import Background
-
-
-
-
-class Game(ScreenHandler):
+from screenhandler import ScreenHandler
+from state import State
+class Settings(State, ScreenHandler):
     def __init__(self):
-        self.__sizetextures()
+        super(Settings, self).__init__()
+        #self.__sizetextures()
         self.gameobjects = []
         self.background_left = Background(config.width/2, config.height)
         self.background_right = Background(config.width/2, config.height)
 
-    def update(self):
-        width, height = self.screen.get_size()
+    def update(self, dt):
+        pass
+        #width, height = self.screen.get_size()
+
+    def isdone(self):
+        return False
 
     def resize(self):
-        self.__sizetextures()
+        pass
+        #self.__sizetextures()
 
     def __sizetextures(self):
         width, height = self.screen.get_size()
