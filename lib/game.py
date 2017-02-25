@@ -14,8 +14,8 @@ class Game(State, ScreenHandler):
         self.background_left = Background(width/2, height)
         self.background_right = Background(width/2, height)
         self.position = (960,0)
-        self.bright_star = GameObject("star.png", self.position, width/2, height, 0)
-        self.dark_star = GameObject("star_dark.png", self.position, width/2, height, 0)
+        self.bright_star = GameObject(["Sprites/star1.png", "Sprites/star2.png", "Sprites/star3.png"], self.position, width/2, height, 0)
+        self.dark_star = GameObject(["star_dark.png"], self.position, width/2, height, 0)
         self.__sizetextures()
         self.platforms = []
         self.displacement = 0

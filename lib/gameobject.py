@@ -4,14 +4,21 @@ import config
 
 
 class GameObject(object):
-    def __init__(self, image, pos, screenwidth, screenheight, displacement):
+    def __init__(self, images, pos, screenwidth, screenheight, displacement):
+        print "here"
         self.rotation_vector = 0
         self.rotation = 0
         self.speed = 0
         self.position = pos
-        self.image = pygame.image.load(config.IMAGE_ROOT + image)
-        self.width = self.image.get_size()[0]
-        self.height = self.image.get_size()[1]
+        self.images = []
+        for image in images:
+            self.images.append(pygame.image.load(config.IMAGE_ROOT + image))
+
+        self.image_offset = 0
+        self.framems = 80
+        self.imagems = 0
+        self.width = self.images[0].get_size()[0]
+        self.height = self.images[0].get_size()[1]
         self.displacement = displacement
         self.resize(screenwidth, screenheight)
         self.is_dead = False
@@ -20,6 +27,7 @@ class GameObject(object):
         return self.is_dead
 
     def move(self, newpos, dt):
+        #animate by switching images
         x,y = newpos
         if x < self.width / 2:
             x = self.width / 2
@@ -55,6 +63,12 @@ class GameObject(object):
 
     def update(self, surf, displacement, dt):
         self.rotation += (dt / 5.0 * self.rotation_vector)
+        self.imagems += dt
+        while self.imagems > self.framems:
+            self.image_offset = (self.image_offset + 1) % len(self.images)
+            self.imagems -= self.framems
+            self.resize(surf.get_size()[0], surf.get_size()[1])
+
         self.displacement = displacement
         self.rotated_image = utils.rot_center(self.resized_image, self.rotation)
         drawpos = self.getpos(surf.get_size())
@@ -64,5 +78,6 @@ class GameObject(object):
     def resize(self, screenwidth, screenheight):
         heightratio = float(screenwidth) / config.GAME_HEIGHT
         widthratio = float(screenheight) / config.GAME_WIDTH
-        self.resized_image = utils.aspect_scale(self.image, (self.image.get_size()[0] * widthratio, self.image.get_size()[1] * heightratio))
+        img = self.images[self.image_offset]
+        self.resized_image = utils.aspect_scale(img, (img.get_size()[0] * widthratio, img.get_size()[1] * heightratio))
         self.resized_image.convert()
