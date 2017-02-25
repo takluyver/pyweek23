@@ -26,3 +26,13 @@ def aspect_scale(img,(bx,by)):
             sy = by
 
     return pygame.transform.scale(img, (int(sx),int(sy)))
+
+def scale_rect(screen_rect, source_rect, widthpct, heightpct):
+    #to make a rect that is 60% of the width, get the current rect, and determine the scale ratio between full screen and
+    # current width, then scale to full width, then multiply by scale ratio.
+    #print "screen-rect",  screen_rect, "source_rect", source_rect
+    scale_factor =  screen_rect.width / float(source_rect.width)
+    #print "scale factor:", scale_factor
+    newrect = pygame.rect.Rect(0, 0, source_rect.width * scale_factor * widthpct, source_rect.height * scale_factor * heightpct)
+    return newrect
+    #TODO: handle height scaling too.
