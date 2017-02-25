@@ -5,7 +5,8 @@ import config
 
 class GameObject(object):
     def __init__(self, image, pos, screenwidth, screenheight, displacement):
-        self.direction = 90
+        self.rotation_vector = 0
+        self.rotation = 0
         self.speed = 0
         self.position = pos
         self.image = pygame.image.load(config.IMAGE_ROOT + image)
@@ -18,7 +19,7 @@ class GameObject(object):
     def isdead(self):
         return self.is_dead
 
-    def move(self, newpos):
+    def move(self, newpos, dt):
         x,y = newpos
         if x < self.width / 2:
             x = self.width / 2
@@ -26,6 +27,18 @@ class GameObject(object):
             x = config.GAME_WIDTH - (self.width / 2)
         if y <  self.displacement - self.height:
             self.is_dead = True
+        # if we are moving left, then start rotating left.
+        # if we are moving right, start rotating right.
+        if (self.position[0] < x): # we are moving right
+            self.rotation_vector -= 0.05 * dt
+        elif (self.position[0] > x): # we're moving left
+            self.rotation_vector += 0.05 * dt
+        else:
+            #move vector back toward 0.
+            if self.rotation_vector > 0:
+                self.rotation_vector = max(0, self.rotation_vector - 0.5 * dt)
+            else:
+                self.rotation_vector = min(0, self.rotation_vector + 0.5 * dt)
         self.position = (x, y)
         return self.position
     def getpos(self, screensize):
@@ -34,9 +47,13 @@ class GameObject(object):
         drawpos = drawpos[0] - self.resized_image.get_size()[0]/2, drawpos[1] - self.resized_image.get_size()[1]
         return drawpos
 
-    def update(self, surf, displacement):
+    def update(self, surf, displacement, dt):
+        self.rotation += (dt / 5 * self.rotation_vector)
         self.displacement = displacement
-        surf.blit(self.resized_image, self.getpos(surf.get_size()))
+        self.rotated_image = utils.rot_center(self.resized_image, self.rotation)
+        drawpos = self.getpos(surf.get_size())
+        #self.rotated.center = self.resized_image.get_rect().center
+        surf.blit(self.rotated_image, drawpos)
 
     def resize(self, screenwidth, screenheight):
         heightratio = float(screenwidth) / config.GAME_HEIGHT

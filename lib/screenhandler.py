@@ -92,6 +92,8 @@ class ScreenHandler(object):
 
     def super_active(self):
         self.__resizeall()
+        try: self.resize()
+        except: pass
 
     def super_isdone(self):
         return self.is_screen_done
