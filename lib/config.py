@@ -25,6 +25,22 @@ IMAGE_ROOT = "assets/images/"
 GAME_WIDTH = 1920 # half of 4K width
 GAME_HEIGHT = 2160 # 4K height
 
-highscores = []
-for line in file("highscores.txt").readlines():
-    highscores.append(line.split("|"))
+def reload_scores():
+    global highscores
+    highscores = []
+    f = file("highscores.txt")
+    for line in f.readlines():
+        highscores.append((line.split("|")[0], int(line.split("|")[1].strip())))
+    f.close()
+
+def update_scores(newscores):
+    # only accept the top 10 scores.
+    newscores = newscores[:10]
+    scorefile = file("highscores.txt", "w")
+    for score in newscores:
+        scorefile.write(score[0] + "|" + str(int(score[1])) + "\n")
+    scorefile.close()
+    reload_scores()
+
+reload_scores()
+highscores

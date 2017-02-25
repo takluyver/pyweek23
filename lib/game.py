@@ -64,12 +64,23 @@ class Game(State, ScreenHandler):
 
         #set our state to done if player is dead
         if (self.bright_star.isdead()):
+            #save our score.
+            #TODO: make this less ghetto
+            newscores = []
+            has_scored = False
+            for hiscore in config.highscores:
+                if not has_scored and hiscore[1] < int(self.score): #we have a score higher than this one so insert now.
+                    has_scored = True
+                    newscores.append(("XXX", self.score))
+                newscores.append(hiscore)
+            if not has_scored:
+                newscores.append(("XXX", self.score))
+            config.update_scores(newscores)
             self.is_done = True
 
         # add to dirty rects
         #get old rect for score
         dirty_rects.append(pygame.rect.Rect(0, 20, width/2, self.scorefont.get_size()[1] + 30))
-        print dirty_rects
         #redraw all
         updateall = self.background_left.update(self.back_screen.subsurface(0, 0, width/2, height), dirty_rects)
         self.background_right.update(self.back_screen.subsurface(width/2, 0, width/2, height), dirty_rects)
