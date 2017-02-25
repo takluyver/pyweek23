@@ -36,19 +36,25 @@ class GameObject(object):
         else:
             #move vector back toward 0.
             if self.rotation_vector > 0:
-                self.rotation_vector = max(0, self.rotation_vector - 0.5 * dt)
+                self.rotation_vector = max(0, self.rotation_vector - 0.15 * dt)
             else:
-                self.rotation_vector = min(0, self.rotation_vector + 0.5 * dt)
+                self.rotation_vector = min(0, self.rotation_vector + 0.15 * dt)
         self.position = (x, y)
         return self.position
+
     def getpos(self, screensize):
         #bottom of image is y, center of bottom of image is x.
         drawpos = utils.get_screen_coords(self.position, screensize, self.displacement)
         drawpos = drawpos[0] - self.resized_image.get_size()[0]/2, drawpos[1] - self.resized_image.get_size()[1]
         return drawpos
 
+    def getscreenrect(self, screensize):
+        drawpos = self.getpos(screensize)
+        return pygame.rect.Rect(drawpos[0], drawpos[1], self.resized_image.get_size()[0], self.resized_image.get_size()[1]).inflate(30, 30)
+
+
     def update(self, surf, displacement, dt):
-        self.rotation += (dt / 5 * self.rotation_vector)
+        self.rotation += (dt / 5.0 * self.rotation_vector)
         self.displacement = displacement
         self.rotated_image = utils.rot_center(self.resized_image, self.rotation)
         drawpos = self.getpos(surf.get_size())

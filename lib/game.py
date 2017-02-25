@@ -45,6 +45,9 @@ class Game(State, ScreenHandler):
             self.keyvector = (1, self.vertical_speed)
         else:
             self.keyvector = (0,self.vertical_speed)
+
+        #collect all our dirty rects (must be done before player moves)
+        dirty_rects = [self.bright_star.getscreenrect((width/2, height))]
         #reposition the player
         self.position = (self.position[0] + dt * self.keyvector[0] * self.movement_speed,
                         self.position[1] + dt * self.keyvector[1] * self.movement_speed)
@@ -59,14 +62,21 @@ class Game(State, ScreenHandler):
             self.is_done = True
 
         #redraw all
-        self.background_left.update(self.back_screen.subsurface(0, 0, width/2, height))
-        self.background_right.update(self.back_screen.subsurface(width/2, 0, width/2, height))
+        updateall = self.background_left.update(self.back_screen.subsurface(0, 0, width/2, height), dirty_rects)
+        self.background_right.update(self.back_screen.subsurface(width/2, 0, width/2, height), dirty_rects)
         if (self.active_player == 0):
             self.bright_star.update(self.back_screen.subsurface(0, 0, width/2, height), self.displacement, dt)
             self.dark_star.update(self.back_screen.subsurface(width/2, 0, width/2, height), self.displacement, dt)
         else:
             self.bright_star.update(self.back_screen.subsurface(width/2, 0, width/2, height), self.displacement, dt)
             self.dark_star.update(self.back_screen.subsurface(0, 0, width/2, height), self.displacement, dt)
+
+        #TODO: add all current positions to dirty rects so we can pass all to display update.
+        dirty_rects.append(self.bright_star.getscreenrect((width/2, height)))
+        #Trigger a full screen redraw if anything needs it.
+        if updateall:
+            return None
+        return dirty_rects
 
     def jump_pressed(self):
         self.vertical_speed = 5
