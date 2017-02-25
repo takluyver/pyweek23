@@ -13,14 +13,15 @@ class Game(State, ScreenHandler):
         self.background_left = Background(width/2, height)
         self.background_right = Background(width/2, height)
         self.position = (960,0)
-        self.player_left = GameObject("star.png", self.position, width/2, height)
-        self.player_right = GameObject("star_dark.png", self.position, width/2, height)
+        self.player_left = GameObject("star.png", self.position, width/2, height, 0)
+        self.player_right = GameObject("star_dark.png", self.position, width/2, height, 0)
         self.__sizetextures()
         self.gameobjects = []
         self.displacement = 0
         self.is_displacing = False
         self.keyvector = (0,0)
         self.movement_speed = .75
+        self.is_done = False
 
     def update(self, dt):
         width, height = self.back_screen.get_size()
@@ -32,11 +33,14 @@ class Game(State, ScreenHandler):
             self.displacement += dt / 10.0
         self.position = (self.position[0] + dt * self.keyvector[0] * self.movement_speed,
                         self.position[1] + dt * self.keyvector[1] * self.movement_speed)
-        self.player_left.position = self.position
-        self.player_right.position = self.position
+        self.position = self.player_left.move(self.position)
+        self.player_right.move(self.position)
+        if (self.player_left.isdead()):
+            self.is_done = True
 
     def jump_pressed(self):
         self.is_displacing = True
+        self.position = (self.position[0], self.position[1] + 150)
 
     def left_pressed(self):
         self.keyvector = (-1,0)
@@ -49,7 +53,7 @@ class Game(State, ScreenHandler):
         self.keyvector = (0,0)
 
     def isdone(self):
-        return False
+        return self.is_done
 
     def resize(self):
         self.__sizetextures()

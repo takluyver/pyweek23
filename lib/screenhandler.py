@@ -32,7 +32,7 @@ class ScreenHandler(object):
             config.width = int(config.height * 16 / 9.0)
 
         self.screen = pygame.display.set_mode((config.width, config.height), config.screen_setting)
-        self.back_screen = pygame.Surface((config.width, config.height))
+        self.back_screen = self.screen #pygame.Surface((config.width, config.height))
 
     def process_events(self):
         for event in pygame.event.get():
@@ -99,5 +99,5 @@ class ScreenHandler(object):
     def update_super(self, dt):
         self.process_events()
         self.update(dt)
-        self.screen.blit(self.back_screen, (0,0))
+        #self.screen.blit(self.back_screen, (0,0))
         pygame.display.flip()

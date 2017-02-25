@@ -1,7 +1,8 @@
 import pygame
-font_root = "assets/fonts/"
+import config
+
 def get_font(text, fontname, size, color, bgcolor=(0,0,0)):
-    font = pygame.font.Font(font_root + fontname, 240)
+    font = pygame.font.Font(config.FONT_ROOT + fontname, 240)
     surf = font.render(text, True, color, bgcolor)
     surf = surf.convert(32)
     return surf
@@ -40,3 +41,13 @@ def scale_rect(screen_rect, source_rect, widthpct, heightpct):
     newrect = pygame.rect.Rect(0, 0, source_rect.width * scale_factor * widthpct, source_rect.height * scale_factor * heightpct)
     return newrect
     #TODO: handle height scaling too.
+
+
+def get_screen_coords(gamecoords, screen, displacement):
+    #print gamecoords, screen, displacement
+    heightratio = float(screen[1]) / config.GAME_HEIGHT
+    widthratio = float(screen[0]) / config.GAME_WIDTH
+    screencoordy = screen[1] - ((gamecoords[1] - displacement) * heightratio)
+    screencoordx = gamecoords[0] * widthratio
+    screencoords = screencoordx, screencoordy
+    return screencoords

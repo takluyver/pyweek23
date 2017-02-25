@@ -1,6 +1,6 @@
 from pygame.locals import *
 
-
+#display settings
 width = 1920
 height = 1080
 screen_setting = RESIZABLE
@@ -13,3 +13,14 @@ leftkeys = [K_LEFT, K_a]
 rightkeys = [K_RIGHT, K_d]
 jumpkeys = [K_UP]
 swapkeys = [K_SPACE, K_RETURN]
+
+
+
+#don't change any of this unless you want to watch the world burn.
+FONT_ROOT = "assets/fonts/"
+
+IMAGE_ROOT = "assets/images/"
+
+#don't change this.
+GAME_WIDTH = 1920 # half of 4K width
+GAME_HEIGHT = 2160 # 4K height

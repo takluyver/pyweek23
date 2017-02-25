@@ -22,3 +22,4 @@ class Background(object):
         self.current_width = width
         self.current_height = height
         self.resized_space = utils.aspect_scale(self.space, (self.current_width, self.current_height))
+        self.resized_space.convert()
