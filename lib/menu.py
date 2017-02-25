@@ -5,15 +5,20 @@ from state import State
 from screenhandler import ScreenHandler
 from utils import get_font, scale_rect
 from game import Game
+from music import MusicStart
+from music import MusicStop
 from settings import Settings
 
 def addgamestate(menu):
     g = Game()
     s = Settings()
     #return them to menu after game is done.
+
     menu.statemanager.addnextstate(Menu(menu.statemanager))
+    menu.statemanager.addnextstate(MusicStop())
     menu.statemanager.addnextstate(g)
-    
+    menu.statemanager.addnextstate(MusicStart("assets/sound/bgmusic.ogg"))
+
 class Menu(State, ScreenHandler):
 
     def __init__(self, statemanager):
@@ -34,7 +39,7 @@ class Menu(State, ScreenHandler):
         self.back_screen.fill((0,0,0), self.back_screen.get_rect())
         for i, option in enumerate(self.options):
             #TODO: break this grid code out into a acutal layout function
-            target = scale_rect(self.screen.get_rect(), option[0].get_rect(), .6, .25)
+            target = scale_rect(self.screen.get_rect(), option[0].get_rect(), .6, .4)
             target_surf = pygame.transform.smoothscale(option[0], (target.width, target.height))
             if (i == 0):
                 target.center = (self.screen.get_width() / 2, target.height * 2)

@@ -1,5 +1,4 @@
 import utils, pygame
-from gameobject import GameObject
 
 #draw a live background
 class Background(object):

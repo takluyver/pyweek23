@@ -58,7 +58,6 @@ def scale_rect(screen_rect, source_rect, widthpct, heightpct):
 
 
 def get_screen_coords(gamecoords, screen, displacement):
-    #print gamecoords, screen, displacement
     heightratio = float(screen[1]) / config.GAME_HEIGHT
     widthratio = float(screen[0]) / config.GAME_WIDTH
     screencoordy = screen[1] - ((gamecoords[1] - displacement) * heightratio)

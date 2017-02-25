@@ -11,8 +11,8 @@ downkeys = [K_DOWN, K_s]
 upkeys = [K_UP, K_w]
 leftkeys = [K_LEFT, K_a]
 rightkeys = [K_RIGHT, K_d]
-jumpkeys = [K_UP]
-swapkeys = [K_SPACE, K_RETURN]
+jumpkeys = [K_SPACE]
+swapkeys = [K_UP, K_RETURN]
 
 
 
