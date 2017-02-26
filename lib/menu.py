@@ -38,7 +38,7 @@ class Menu(State, ScreenHandler):
     def update(self, dt):
         self.back_screen.fill((0,0,0), self.back_screen.get_rect())
         for i, option in enumerate(self.options):
-            #TODO: break this grid code out into a acutal layout function
+            #TODO: break this grid code out into an acutal layout function
             target = scale_rect(self.screen.get_rect(), option[0].get_rect(), .6, .4)
             target_surf = pygame.transform.smoothscale(option[0], (target.width, target.height))
             if (i == 0):
