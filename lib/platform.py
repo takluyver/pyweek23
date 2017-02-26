@@ -25,16 +25,16 @@ class PlatformManager(object):
     def _getplatformimage(self, width, is_dark):
         img_width, img_height = self.dark_surfaces[0].get_size()
         if is_dark:
-            surf = pygame.Surface((width * img_width, img_height))
+            surf = pygame.Surface((width * img_width, img_height), pygame.SRCALPHA)
             surf.convert_alpha()
-            surf.fill((0,0,0,0), (0,0,surf.get_size()[0], surf.get_size()[1]))
+            #surf.fill((0,0,0,0), (0,0,surf.get_size()[0], surf.get_size()[1]))
             surf.blit(self.dark_surfaces[0], (0,0))
             for i in range(1, width-1):
                 surf.blit(self.dark_surfaces[1], (img_width * i,0))
             surf.blit(self.dark_surfaces[2], (img_width * (width-1),0))
             return surf
         else:
-            surf = pygame.Surface((width * img_width, img_height))
+            surf = pygame.Surface((width * img_width, img_height), pygame.SRCALPHA)
             surf.blit(self.light_surfaces[0], (0,0))
             for i in range(1, width-1):
                 surf.blit(self.light_surfaces[1], (img_width * i,0))
