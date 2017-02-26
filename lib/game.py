@@ -11,6 +11,28 @@ import utils
 from platform import PlatformManager
 
 class Game(State, ScreenHandler):
+
+    def add_platform(self):
+        width, height = self.back_screen.get_size()
+        self.last_platform_y += random.randint(250,450)
+        self.last_platform_x += random.randint(-450, 450)
+        if (self.last_platform_x < 0):
+            self.last_platform_x = 0
+        if self.last_platform_x > config.GAME_WIDTH - 500:
+            self.last_platform_x = config.GAME_WIDTH - 500
+        z = random.choice([True, False])
+        size = random.randint(3, 9)
+        plat = PlatformObject(self.manager, z, (self.last_platform_x, self.last_platform_y), size, width/2, height, 0)
+        #if active side is left and it's a non-dark platform (not z is light)
+        if (self.active_player == 0) and not z:
+            self.left_platforms.append(plat)
+        elif (self.active_player == 0) and z:
+            self.right_platforms.append(plat)
+        elif (self.active_player == 1) and not z:
+            self.right_platforms.append(plat)
+        else:
+            self.left_platforms.append(plat)
+
     def __init__(self):
         super(Game, self).__init__()
         width, height = self.back_screen.get_size()
@@ -22,23 +44,13 @@ class Game(State, ScreenHandler):
 
         self.right_platforms = []
         self.left_platforms = []
-        y = 0
-        x = 200
-        manager = PlatformManager()
-        for i in range(0, 100):
-            y += random.randint(250,450)
-            x += random.randint(-450, 450)
-            if (x < 0):
-                x = 0
-            if x > config.GAME_WIDTH - 500:
-                x = config.GAME_WIDTH - 500
-            z = random.choice([True, False])
-            size = random.randint(3, 9)
-            plat = PlatformObject(manager, z, (x, y), size, width/2, height, 0)
-            if not z:
-                self.left_platforms.append(plat)
-            else:
-                self.right_platforms.append(plat)
+        self.last_platform_x = 200
+        self.last_platform_y = 0
+        self.active_player = 0
+
+        self.manager = PlatformManager()
+        for i in range(0, 20):
+            self.add_platform()
         #plat = PlatformObject(True, (600, 600), 8, width/2, height, 0)
 
         self.__sizetextures()
@@ -50,7 +62,6 @@ class Game(State, ScreenHandler):
         self.is_done = False
         self.moving_left = False
         self.moving_right = False
-        self.active_player = 0
         self.gravity = -15
         self.score = 0
         self.ramprate = 1
@@ -174,6 +185,27 @@ class Game(State, ScreenHandler):
             final_rects.append(rect)
             final_rects.append(rect.move(self.back_screen.get_size()[0] / 2, 0))
 
+        # remove any platforms that are below the screen.  tally them and add that many
+        # more back to the top so there are always 30 platforms.
+        removed_left_platforms = 0
+        for platform in self.left_platforms:
+            if platform.get_top() < self.displacement:
+                removed_left_platforms += 1
+            else:
+                #since platforms are in order, we can stop scanning when we find one that's above the surface
+                break
+        self.left_platforms = self.left_platforms[removed_left_platforms:]
+        removed_right_platforms = 0
+        for platform in self.right_platforms:
+            if platform.get_top() < self.displacement:
+                removed_right_platforms += 1
+            else:
+                #since platforms are in order, we can stop scanning when we find one that's above the surface
+                break
+        self.right_platforms = self.right_platforms[removed_right_platforms:]
+
+        for i in range(0, removed_left_platforms + removed_right_platforms):
+            self.add_platform()
         #Trigger a full screen redraw if anything needs it.
         if updateall:
             return None
