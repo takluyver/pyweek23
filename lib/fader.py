@@ -41,3 +41,7 @@ class Fader(ScreenHandler, State):
 
     def isdone(self):
         return self.is_done
+
+
+    def swap_pressed(self):
+        self.is_done = True
