@@ -1,5 +1,7 @@
 import pygame
 import config
+import os.path
+
 # from http://www.pygame.org/wiki/RotateCenter
 def rot_center(image, angle):
     """rotate an image while keeping its center and size"""
@@ -12,7 +14,7 @@ def rot_center(image, angle):
 
 
 def get_font(text, fontname, size, color, bgcolor=(0,0,0)):
-    font = pygame.font.Font(config.FONT_ROOT + fontname, size)
+    font = pygame.font.Font(os.path.join(config.FONT_ROOT, fontname), size)
     if bgcolor == None:
         surf = font.render(text, True, color)
         surf = surf.convert_alpha()

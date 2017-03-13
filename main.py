@@ -1,7 +1,9 @@
+#!/usr/bin/python
 import sys
 sys.dont_write_bytecode = True
 import pygame
 import lib
+from lib.config import asset
 from lib.fader import Fader
 from lib.menu import Menu
 from lib.blank import Blank
@@ -16,7 +18,7 @@ if __name__ == "__main__":
     clock = pygame.time.Clock()
     statemanager = StateManager(clock.tick)
     pygame.mixer.init()
-    statemanager.add(MusicStart("assets/sound/intro.ogg"))
+    statemanager.add(MusicStart(asset("sound", "intro.ogg")))
     statemanager.add(Blank(1500))
     statemanager.add(Fader("CandL Development Presents", 750, 1500, 3000, "1938 STeMPEL.ttf", (196, 56, 21)))
     statemanager.add(Blank(1000))

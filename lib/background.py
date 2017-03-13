@@ -1,9 +1,11 @@
+import os.path
+from . import config
 import utils, pygame
 
 #draw a live background
 class Background(object):
     #Load all full resolution assets as static
-    space = pygame.image.load("assets/images/space.png")
+    space = pygame.image.load(os.path.join(config.IMAGE_ROOT, "space.png"))
 
     def __init__(self, width, height):
         self.resize_textures(width, height)
