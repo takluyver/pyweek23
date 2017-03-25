@@ -11,7 +11,7 @@ from lib.statemanager import StateManager
 from lib.music import MusicStart, MusicStop
 from pygame.locals import *
 
-if __name__ == "__main__":
+def main():
     pygame.init()
     # create new state machine and register the clock  tick method
     # as our incrementing callback for current ticks in ms.
@@ -31,3 +31,6 @@ if __name__ == "__main__":
     statemanager.add(Fader("THANKS FOR PLAYING!", 500, 4000, 5000, "good times rg.ttf", (171, 252, 251)))
     while statemanager.update():
         pass
+
+if __name__ == "__main__":
+    main()

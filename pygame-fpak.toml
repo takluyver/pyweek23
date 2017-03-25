@@ -1,0 +1,13 @@
+python = "2.7"
+name = "SolarFlair"
+appid = "io.github.lukevp.pyweek23"
+files = [
+  "lib",
+  "main.py",
+  "assets",
+  "highscores.txt"
+]
+entry-point = "main:main"
+
+[icons]
+64 = "assets/images/star_64.png"

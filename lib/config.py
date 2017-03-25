@@ -15,7 +15,7 @@ rightkeys = [K_RIGHT, K_d]
 jumpkeys = [K_SPACE]
 swapkeys = [K_UP, K_RETURN]
 
-INSTALL_DIR = "/app/share/solarflair"  # Flatpak installed
+INSTALL_DIR = "/app/share/mygame"  # Flatpak installed
 INSTALL_DIR = ""  # Running from git - comment this out before building with Flatpak
 
 def asset(*path):
